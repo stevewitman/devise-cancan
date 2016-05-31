@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160530221658) do
+ActiveRecord::Schema.define(version: 20160531054737) do
 
   create_table "statuses", force: :cascade do |t|
     t.text     "post"
@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(version: 20160530221658) do
     t.string   "last_sign_in_ip"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
+    t.integer  "roles_mask"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true
