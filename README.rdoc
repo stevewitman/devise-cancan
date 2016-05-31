@@ -1,28 +1,38 @@
-== README
+https://www.youtube.com/watch?v=DEyPpgs7EUk
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+rails new devise_cancan
+cd devise_cancan/
+rails g scaffold status post:text
 
-Things you may want to cover:
+/Gemfile (add after first line)
+  gem 'devise'
+  gem 'cancancan'
 
-* Ruby version
+bundle install
+rails generate devise:install
 
-* System dependencies
+/config/development.rb (add after first line)
+  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 
-* Configuration
+/config/routes.rb (add after first line)
+  root 'statuses#index'
 
-* Database creation
+rails generate devise User
+rake db:migrate
+rails generate devise:views
 
-* Database initialization
+/app/controllers/statuses_controller.rb (add after first line)
+  before_action :authenticate_user!
 
-* How to run the test suite
+/app/views/layouts/application.html.erb (before <%= yield %>)
+  <% if user_signed_in? %>
+    <%= link_to 'sign out', destroy_user_session_path, method: :delete %>
+  <% end %>
+  <br>
 
-* Services (job queues, cache servers, search engines, etc.)
+rails g cancan:ability
+rails generate migration add_roles_mask_to_users roles_mask:integer
+rake db:migrate
 
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+/app/models/user.rb ( before "end" )
+  
